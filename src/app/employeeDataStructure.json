@@ -1,0 +1,24 @@
+[{
+    "employeeId": "1007",
+    "employeeFirstName": "John",
+    "employeeLastName": "Smith",
+    "employeeTodoTasks":[
+        {
+            "todoTaskId": "1001",
+            "todoTaskTitle": "Task 1",
+            "todoTaskContent": "Task 1 content"
+        },
+        {
+            "todoTaskId": "1002",
+            "todoTaskTitle": "Task 2",
+            "todoTaskContent": "Task 2 content"
+        }
+    ],
+    "employeeDoneTasks":[
+        {
+            "doneTaskId": "1003",
+            "doneTaskTitle": "Task 3",
+            "doneTaskContent": "Task 3 content"
+        }
+    ]
+}]

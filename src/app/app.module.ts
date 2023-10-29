@@ -30,6 +30,10 @@ import { MatDialogModule} from '@angular/material/dialog';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule} from '@angular/material/input';
 import { MatSidenavModule} from '@angular/material/sidenav';
+//
+import { MatDividerModule} from '@angular/material/divider';
+//
+import { HttpClientModule } from '@angular/common/http';
 
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
@@ -38,6 +42,17 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { AdminManagerComponent } from './admin-manager/admin-manager.component';
+//
+import { MatExpansionModule } from '@angular/material/expansion';
+import { TaskCreateComponent } from './task-create/task-create.component';
+import { TaskListComponent } from './task-list/task-list.component';
+import { EmployeeListComponent } from './employee/employee-list/employee-list.component';
+import { EmployeeCreateComponent } from './employee/employee-create/employee-create.component';
+import { SignInComponent } from './sign-in/sign-in.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TaskService } from './task.service';
+import { EmployeeService } from './employee.service';
+//
 
 @NgModule({
   declarations: [
@@ -49,10 +64,17 @@ import { AdminManagerComponent } from './admin-manager/admin-manager.component';
     NotFoundComponent,
     AuthLayoutComponent,
     TaskManagerComponent,
-    CalendarComponent,
+    // CalendarComponent,
     AboutComponent,
     ContactComponent,
-    AdminManagerComponent
+    AdminManagerComponent,
+    TaskCreateComponent,
+    TaskListComponent,
+    EmployeeListComponent,
+    EmployeeCreateComponent,
+    BaseLayoutComponent,
+    AuthLayoutComponent,
+    SignInComponent
   ],
   imports: [
     BrowserModule,
@@ -67,9 +89,14 @@ import { AdminManagerComponent } from './admin-manager/admin-manager.component';
     MatIconModule,
     MatMenuModule,
     MatDialogModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatDividerModule,
+    MatExpansionModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [TaskService, EmployeeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

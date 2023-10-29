@@ -1,0 +1,18 @@
+<!-- <mat-accordion multi="true"> -->
+<mat-accordion multi="true" *ngIf="tasks.length > 0">
+
+    <!-- <mat-expansion-panel> -->
+    <mat-expansion-panel *ngFor="let task of tasks">
+
+        <mat-expansion-panel-header>
+            {{task.title}}
+        </mat-expansion-panel-header>
+        {{task.content}}
+        <mat-action-row>
+            <button mat-button color="primary">EDIT</button>
+            <button mat-button color="warn">DELETE</button>
+        </mat-action-row>
+    </mat-expansion-panel>
+</mat-accordion>
+<!-- <p class="info-text mat-body-1">No tasks yet!</p> -->
+<p class="info-text mat-body-1" *ngIf="tasks.length <= 0">No tasks yet!</p>

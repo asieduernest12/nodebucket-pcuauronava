@@ -1,0 +1,17 @@
+<mat-card>
+    <form (submit)="onAddEmployee(employeeForm)" #employeeForm="ngForm">
+        <mat-form-field>
+            <input matInput type="text" name="firstName" ngModel required minlength="3" placeholder="Employee Title"
+                #firstName="ngModel">
+            <mat-error *ngIf="firstName.invalid">Please enter first name.</mat-error>
+
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" name="lastName" ngModel required placeholder="Employee Content"
+                #lastName="ngModel">
+            <mat-error *ngIf="lastName.invalid">Please enter last name.</mat-error>
+
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Save Employee</button>
+    </form>
+</mat-card>

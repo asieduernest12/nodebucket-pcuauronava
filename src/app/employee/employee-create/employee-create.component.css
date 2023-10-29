@@ -1,0 +1,14 @@
+task-create {
+  background-color: yellow;
+  color: black;
+  border: 2px solid black;
+  padding: 10px;
+  font-family: "Harry Potter", sans-serif;
+  font-size: 18px;
+  text-align: center;
+}
+
+mat-form-field,
+textarea {
+  width: 100%;
+}
