@@ -10,7 +10,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("connetion successfull"))
+  .then(() => console.log("connection successful"))
   .catch((error) => console.log("connection failed", error));
 
 module.exports = mongoose;

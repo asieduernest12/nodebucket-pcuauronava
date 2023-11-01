@@ -13,7 +13,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 
 require("./connection");
-const Employee = require('./models/employee')
+const Employee = require("./models/employee");
 const Task = require("./models/task");
 // schema for the tasks collection
 
@@ -30,33 +30,40 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../dist/nodebucket")));
 app.use("/", express.static(path.join(__dirname, "../dist/nodebucket")));
 
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "*"); // Allows any domain to access our resources
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   ); // Which kind of headers are allowed
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, PATCH, DELETE, OPTIONS"
-//   ); // Which kind of requests are allowed
-//   next(); // Allows the request to continue to the next middleware in line
-// });
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Allows any domain to access our resources
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  ); // Which kind of headers are allowed
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PATCH, DELETE, OPTIONS"
+  ); // Which kind of requests are allowed
+  next(); // Allows the request to continue to the next middleware in line
+});
 
 // Task API routes
 
-app.get("/hello", (req, res) => {
-  res.send("Hello World!");
-});
+//working on this part!!!
+// app.get("/api/employees/:empId/tasks", async (req, res) => {
+//   try {
+//     // const tasks = await Task.find({ employee:{ req.params.empId} });
+//     // find the task where the empId field on the employee document matches the empId parameter
+//     const tasks = await Task.find({ "employee.empId": req.params.empId });
+//     res.json(tasks);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send(error);
+//   }
+// });
 
-app.get("/api/employees/:empId/tasks", async (req, res) => {
+app.get("/api/employees", async (req, res) => {
   try {
-    // const tasks = await Task.find({ employee:{ req.params.empId} });
-    // find the task where the empId field on the employee document matches the empId parameter
-    const tasks = await Task.find({ 'employee.empId': req.params.empId });
-    res.json(tasks);
+    const [employee] = await Employee.findAll();
+    res.json(employee);
+    console.log(employee);
   } catch (error) {
-    console.log(error);
     res.status(500).send(error);
   }
 });
@@ -93,23 +100,62 @@ app.post("/api/tasks", (req, res, next) => {
 
 // example using the MongoDB database
 
-app.get("/api/tasks", (req, res, next) => {
-  const tasks = [
-    {
-      id: "fadf12421l",
-      title: "First server-side task",
-      content: "This is coming from the server",
-    },
-    {
-      id: "ksajflaj132",
-      title: "Second server-side task",
-      content: "This is coming from the server!",
-    },
-  ];
-  res.status(200).json({
-    message: "Tasks fetched successfully!",
-    tasks: tasks,
+// app.get("/api/tasks", (req, res, next) => {
+//   const tasks = [
+//     {
+//       id: "fadf12421l",
+//       title: "First server-side task",
+//       content: "This is coming from the server",
+//     },
+//     {
+//       id: "ksajflaj132",
+//       title: "Second server-side task",
+//       content: "This is coming from the server!",
+//     },
+//   ];
+//   res.status(200).json({
+//     message: "Tasks fetched successfully!",
+//     tasks: tasks,
+//   });
+// });
+
+app.get("/api/tasks", async (req, res) => {
+  const [task] = Task.find().then((documents) => {
+    console.log(documents);
+    res.status(200).json({
+      message: "Tasks fetched successfully!",
+      tasks: documents,
+      // this is to match the format from the database with
+      // data from the model in the database case the model is
+      // id but in the database is _id
+    });
   });
+});
+
+// app.get("/api/tasks", async (req, res) => {
+//   try {
+//     const [task] = await Task.find().then((documents) => {
+//       console.log(documents);
+//       res.status(200).json({
+//         message: "Tasks fetched successfully!",
+//         tasks: documents,
+//         // this is to match the format from the database with
+//         // data from the model in the database case the model is
+//         // id but in the database is _id
+//       });
+//     });
+//   } catch (error) {
+//     res.status(500).send(error);
+//   }
+// });
+
+app.get("/api/tasks/:empId", async (req, res) => {
+  try {
+    const [employee] = await Employee.find({ empId: req.params.empId });
+    res.json(employee);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 // Employee API routes
@@ -139,9 +185,23 @@ app.get("/api/tasks", (req, res, next) => {
 //   });
 // });
 
+app.delete("/api/tasks/:id", (req, res, next) => {
+  Task.deleteOne({ _id: req.params.id }).then((result) => {
+    console.log(result);
+    res.status(200).json({ message: "Task deleted!" });
+  });
+});
+
+app.delete("/api/employees/:id", (req, res, next) => {
+  Task.deleteOne({ _id: req.params.id }).then((result) => {
+    console.log(result);
+    res.status(200).json({ message: "Employee deleted!" });
+  });
+});
+
 // error handler for 404 errors
 app.use(function (req, res, next) {
-  next(createServer(404)); // forward to error handler
+  res(createServer(404)); // forward to error handler
 });
 
 // error handler for all other errors
