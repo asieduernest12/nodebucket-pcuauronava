@@ -8,15 +8,16 @@ import { EmployeeService } from '../../employee.service';
   styleUrls: ['./employee-create.component.css'],
 })
 export class EmployeeCreateComponent {
+  enteredEmpId = '';
   enteredFirstName = '';
   enteredLastName = '';
 
   constructor(public employeesService: EmployeeService) {}
 
   onAddEmployee(form: NgForm) {
-    // if (form.invalid) {
-    //   return;
-    // }
+    if (form.invalid) {
+      return;
+    }
     this.employeesService.addEmployee(
       form.value.empId,
       form.value.firstName,

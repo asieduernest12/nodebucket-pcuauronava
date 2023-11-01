@@ -8,10 +8,9 @@ import { TaskService } from '../task.service';
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css'],
 })
-export class TaskListComponent implements OnInit {
+export class TaskListComponent implements OnInit, OnDestroy {
   tasks: TaskModel[] = [];
   private taskSub: Subscription;
-  tasksService: TaskService;
 
   constructor(public TaskService: TaskService) {}
 

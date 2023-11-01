@@ -3,9 +3,9 @@
     <mat-expansion-panel *ngFor="let employee of employees">
 
         <mat-expansion-panel-header>
-            {{employee.firstName}}
+            {{employee.firstName}} {{employee.lastName}}
         </mat-expansion-panel-header>
-        {{employee.lastName}}
+        {{ employee.empId }}
         <mat-action-row>
             <button mat-button color="primary">EDIT</button>
             <button mat-button color="warn" (click)="onDelete(employee.empId)">DELETE</button>

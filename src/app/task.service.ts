@@ -47,7 +47,10 @@ export class TaskService {
       content: content,
     };
     this.http
-      .post<{ message: string }>('http://localhost:3000/api/tasks', task)
+      .post<{ message: string; taskId: string }>(
+        'http://localhost:3000/api/tasks',
+        task
+      )
       .subscribe((responseData) => {
         console.log(responseData.message);
         //responseData is named arbitrarily
@@ -60,6 +63,9 @@ export class TaskService {
     this.http
       .delete('http://localhost:3000/api/tasks/' + taskId)
       .subscribe(() => {
+        const updatedTasks = this.tasks.filter((task) => task.id !== taskId);
+        this.tasks = updatedTasks;
+        this.tasksUpdated.next([...this.tasks]);
         console.log('Deleted!');
       });
   }

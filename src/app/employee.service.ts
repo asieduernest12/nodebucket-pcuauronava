@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { EmployeeModel } from './employee.model';
-import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { response } from 'express';
 import { str } from 'ajv';
+
+import { EmployeeModel } from './employee.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,15 +18,28 @@ export class EmployeeService {
   constructor(private http: HttpClient) {}
   getEmployees() {
     this.http
-      .get<{ message: string; employees: EmployeeModel[] }>(
+      .get<{ message: string; employees: any }>(
         'http://localhost:3000/api/employees'
       )
-      .subscribe((employeeData) => {
-        this.employees = employeeData.employees;
+      .pipe(
+        map((employeeData) => {
+          return employeeData.employees.map((employee) => {
+            return {
+              empId: employee.empId,
+              firstName: employee.firstName,
+              lastName: employee.lastName,
+              // todoTasks: employee.todoTasks,
+              // doneTasks: employee.doneTasks
+            };
+          });
+        })
+      )
+      .subscribe((transformedEmployees) => {
+        this.employees = transformedEmployees;
         this.employeesUpdated.next([...this.employees]);
       });
-    console.log('ests');
   }
+
   getEmployeeUpdateListener() {
     return this.employeesUpdated.asObservable();
     //return an observable
@@ -34,26 +49,33 @@ export class EmployeeService {
       empId: empId,
       firstName: firstName,
       lastName: lastName,
-      // todoTasks: [], doneTasks: []
+      //, todoTasks: [], doneTasks: []
     };
     this.http
-      .post<{ message: string }>(
+      .post<{ message: string; empId: string }>(
         'http://localhost:3000/api/employees',
         employee
       )
       .subscribe((responseData) => {
-        console.log(responseData.message);
+        const id = responseData.empId;
+        employee.empId = id;
+        // console.log(responseData.message);
         //responseData is named arbitrarily
         this.employees.push(employee);
         this.employeesUpdated.next([...this.employees]);
         //passing a copy of the array
       });
   }
+
   deleteEmployee(empId: string) {
     this.http
       .delete('http://localhost:3000/api/employees/' + empId)
       .subscribe(() => {
-        console.log('Deleted!');
+        const updatedEmployees = this.employees.filter(
+          (employee) => employee.empId !== empId
+        );
+        this.employees = updatedEmployees;
+        this.employeesUpdated.next([...this.employees]);
       });
   }
 }

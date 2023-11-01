@@ -19,6 +19,8 @@ const Task = require("./models/task");
 
 // Create the Express app
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 const cors = require("cors");
 app.use(cors());
@@ -43,7 +45,7 @@ app.use((req, res, next) => {
   next(); // Allows the request to continue to the next middleware in line
 });
 
-// Task API routes
+// Employee API routes
 
 //working on this part!!!
 // app.get("/api/employees/:empId/tasks", async (req, res) => {
@@ -59,13 +61,12 @@ app.use((req, res, next) => {
 // });
 
 app.get("/api/employees", async (req, res) => {
-  try {
-    const [employee] = await Employee.findAll();
-    res.json(employee);
-    console.log(employee);
-  } catch (error) {
-    res.status(500).send(error);
-  }
+  Employee.find().then((documents) => {
+    res.status(200).json({
+      message: "Employees fetched successfully!",
+      employees: documents,
+    });
+  });
 });
 
 app.get("/api/employees/:empId", async (req, res) => {
@@ -76,52 +77,55 @@ app.get("/api/employees/:empId", async (req, res) => {
     res.status(500).send(error);
   }
 });
+// Employee API routes
 
-// app.post("/api/tasks", (req, res, next) => {
-//   const task = req.body;
-//   console.log(task);
-//   res.status(201).json({
-//       message: 'Task added successfully'
-//   });
+app.post("/api/employees", (req, res, next) => {
+  const employee = new Employee({
+    empId: req.body.empId,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+  });
+  employee.save().then((createdEmployee) => {
+    res.status(201).json({
+      message: "Employee added successfully",
+      postId: createdEmployee._id,
+    });
+  });
+});
+
+app.delete("/api/employees/:id", (req, res, next) => {
+  Task.deleteOne({ _id: req.params.id }).then((result) => {
+    console.log(result);
+    res.status(200).json({ message: "Employee deleted!" });
+  });
+});
+
+// app.get("/api/tasks/:empId", async (req, res) => {
+//   try {
+//     const [employee] = await Employee.find({ empId: req.params.empId });
+//     res.json(employee);
+//   } catch (error) {
+//     res.status(500).send(error);
+//   }
 // });
-//example using only the server side
+
+// Task API routes
 
 app.post("/api/tasks", (req, res, next) => {
   const task = new Task({
     title: req.body.title,
     content: req.body.content,
   });
-  task.save();
-  console.log(task);
-  res.status(201).json({
-    message: "Task added successfully",
+  task.save().then((createdTask) => {
+    res.status(201).json({
+      message: "Task added successfully",
+      taskId: createdTask._id,
+    });
   });
 });
 
-// example using the MongoDB database
-
-// app.get("/api/tasks", (req, res, next) => {
-//   const tasks = [
-//     {
-//       id: "fadf12421l",
-//       title: "First server-side task",
-//       content: "This is coming from the server",
-//     },
-//     {
-//       id: "ksajflaj132",
-//       title: "Second server-side task",
-//       content: "This is coming from the server!",
-//     },
-//   ];
-//   res.status(200).json({
-//     message: "Tasks fetched successfully!",
-//     tasks: tasks,
-//   });
-// });
-
-app.get("/api/tasks", async (req, res) => {
-  const [task] = Task.find().then((documents) => {
-    console.log(documents);
+app.get("/api/tasks", async (req, res, next) => {
+  Task.find().then((documents) => {
     res.status(200).json({
       message: "Tasks fetched successfully!",
       tasks: documents,
@@ -132,70 +136,10 @@ app.get("/api/tasks", async (req, res) => {
   });
 });
 
-// app.get("/api/tasks", async (req, res) => {
-//   try {
-//     const [task] = await Task.find().then((documents) => {
-//       console.log(documents);
-//       res.status(200).json({
-//         message: "Tasks fetched successfully!",
-//         tasks: documents,
-//         // this is to match the format from the database with
-//         // data from the model in the database case the model is
-//         // id but in the database is _id
-//       });
-//     });
-//   } catch (error) {
-//     res.status(500).send(error);
-//   }
-// });
-
-app.get("/api/tasks/:empId", async (req, res) => {
-  try {
-    const [employee] = await Employee.find({ empId: req.params.empId });
-    res.json(employee);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-// Employee API routes
-
-// app.post("/api/employees", (req, res, next) => {
-//   const employee = req.body;
-//   console.log(employee);
-//   res.status(201).json({
-//       message: 'Employee added successfully'
-//   });
-// });
-
-// app.get('/api/employees',(req, res, next) => {
-//   const employees = [{
-//   id: 'fadf12421l',
-//   firstName: 'Michael',
-//   lastName: 'Inserver'
-//   },
-//   {
-//       id: 'ksajflaj132',
-//       firstName: 'Linda',
-//       lastName: 'Routed'
-//   }];
-//   res.status(200).json({
-//       message: 'Employees fetched successfully!',
-//       employees: employees
-//   });
-// });
-
 app.delete("/api/tasks/:id", (req, res, next) => {
   Task.deleteOne({ _id: req.params.id }).then((result) => {
     console.log(result);
     res.status(200).json({ message: "Task deleted!" });
-  });
-});
-
-app.delete("/api/employees/:id", (req, res, next) => {
-  Task.deleteOne({ _id: req.params.id }).then((result) => {
-    console.log(result);
-    res.status(200).json({ message: "Employee deleted!" });
   });
 });
 
