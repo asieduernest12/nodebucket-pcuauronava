@@ -26,50 +26,35 @@ const routes: Routes = [
   {
     path: '',
     component: BaseLayoutComponent,
+    canActivate: [SignInGuard],
     children: [
       {
         path: '',
         component: HomeComponent, // children: [{ path: '', component: HomeComponent }]
-        canActivate: [SignInGuard],
       },
       { path: 'about', component: AboutComponent },
       {
         path: 'admin-manager',
         component: AdminManagerComponent,
-        canActivate: [SignInGuard],
       },
       { path: 'calendar', component: CalendarComponent },
       { path: 'contact', component: ContactComponent },
       {
         path: 'task-manager',
         component: TaskManagerComponent,
-        canActivate: [SignInGuard],
       },
-      {
-        path: 'session',
-        component: AuthLayoutComponent,
-        children: [
-          { path: 'not-found', component: NotFoundComponent },
-          { path: 'sign-in', component: SignInComponent },
-        ],
-      }, // added the path for the not found component
     ],
   },
-  {
-    path: 'session',
-    component: AuthLayoutComponent,
-    children: [
-      { path: 'not-found', component: NotFoundComponent },
-      { path: 'sign-in', component: SignInComponent },
-    ],
-  },
+
+  { path: 'not-found', component: NotFoundComponent },
+  { path: 'sign-in', component: SignInComponent },
   {
     // path for the security module (e.g. login, register, forgot password, etc.)
     path: 'security',
     loadChildren: () =>
       import('./security/security.module').then((m) => m.SecurityModule),
   },
-  { path: '***', redirectTo: 'session/not-found' },
+  { path: '*', redirectTo: '/not-found' },
 ];
 
 @NgModule({

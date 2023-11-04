@@ -15,9 +15,9 @@
             </div>
             <br> -->
             <div fxLayout="row wrap" fxLayoutAlign="end start">
-                <button mat-button routerLink="/session/sign-in">Login</button>
+                <button mat-button routerLink="/sign-in">Login</button>
                 <button mat-button routerLink="/register">Register</button>
-                <button mat-button routerLink="/">Logout</button>
+                <button mat-button (click)="signOut()">Logout</button>
             </div>
         </div>
     </mat-toolbar-row>

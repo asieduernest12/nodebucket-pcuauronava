@@ -1,3 +1,4 @@
+import { CookieModule } from 'ngx-cookie';
 /**
  * Title: app.module.ts
  * Author: Professor Krasso
@@ -104,6 +105,7 @@ import { TaskDetailsComponent } from './task-details/task-details.component';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+    CookieModule,
   ],
   providers: [TaskService, EmployeeService],
   bootstrap: [AppComponent],

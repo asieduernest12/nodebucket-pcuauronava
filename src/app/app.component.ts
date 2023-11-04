@@ -11,9 +11,9 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   template: `
     <!-- This router-outlet displays the content of the BaseLayout or AuthLayout components -->
+    <app-nav></app-nav>
     <router-outlet></router-outlet>
   `,
-  styles: []
+  styles: [],
 })
-export class AppComponent {
-}
+export class AppComponent {}
