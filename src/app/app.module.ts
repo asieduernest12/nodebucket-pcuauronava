@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { BaseLayoutComponent } from './layouts/base-layout/base-layout.component';
+import { SideNavComponent } from './layouts/sidenav/sidenav.component';
 import { NavComponent } from './layouts/nav/nav.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,22 +23,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule} from '@angular/material/icon';
-import { MatMenuModule} from '@angular/material/menu';
-import { MatDialogModule} from '@angular/material/dialog';
-import { MatFormFieldModule} from '@angular/material/form-field';
-import { MatInputModule} from '@angular/material/input';
-import { MatSidenavModule} from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSidenavModule } from '@angular/material/sidenav';
 //
-import { MatDividerModule} from '@angular/material/divider';
+import { MatDividerModule } from '@angular/material/divider';
 //
 import { HttpClientModule } from '@angular/common/http';
 
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { TaskManagerComponent } from './task-manager/task-manager.component';
+//
+import { TasksComponent } from './task-manager/tasks/tasks.component';
+//
+
 import { CalendarComponent } from './calendar/calendar.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
@@ -52,6 +57,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TaskService } from './task.service';
 import { EmployeeService } from './employee.service';
+import { TaskDetailsComponent } from './task-details/task-details.component';
 //
 
 @NgModule({
@@ -65,16 +71,19 @@ import { EmployeeService } from './employee.service';
     AuthLayoutComponent,
     TaskManagerComponent,
     // CalendarComponent,
+    SideNavComponent,
     AboutComponent,
     ContactComponent,
     AdminManagerComponent,
     TaskCreateComponent,
     TaskListComponent,
+    TasksComponent,
     EmployeeListComponent,
     EmployeeCreateComponent,
     BaseLayoutComponent,
     AuthLayoutComponent,
-    SignInComponent
+    SignInComponent,
+    TaskDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -94,9 +103,9 @@ import { EmployeeService } from './employee.service';
     MatExpansionModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [TaskService, EmployeeService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -32,6 +32,19 @@ const routes: Routes = [
         component: HomeComponent, // children: [{ path: '', component: HomeComponent }]
         canActivate: [SignInGuard],
       },
+      { path: 'about', component: AboutComponent },
+      {
+        path: 'admin-manager',
+        component: AdminManagerComponent,
+        canActivate: [SignInGuard],
+      },
+      { path: 'calendar', component: CalendarComponent },
+      { path: 'contact', component: ContactComponent },
+      {
+        path: 'task-manager',
+        component: TaskManagerComponent,
+        canActivate: [SignInGuard],
+      },
       {
         path: 'session',
         component: AuthLayoutComponent,
@@ -55,19 +68,6 @@ const routes: Routes = [
     path: 'security',
     loadChildren: () =>
       import('./security/security.module').then((m) => m.SecurityModule),
-  },
-  { path: 'about', component: AboutComponent },
-  {
-    path: 'admin-manager',
-    component: AdminManagerComponent,
-    canActivate: [SignInGuard],
-  },
-  { path: 'calendar', component: CalendarComponent },
-  { path: 'contact', component: ContactComponent },
-  {
-    path: 'task-manager',
-    component: TaskManagerComponent,
-    canActivate: [SignInGuard],
   },
   { path: '***', redirectTo: 'session/not-found' },
 ];

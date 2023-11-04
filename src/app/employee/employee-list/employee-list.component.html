@@ -1,3 +1,6 @@
+<mat-card>
+    <h1>Employee List</h1>
+</mat-card>
 <mat-accordion multi="true" *ngIf="employees.length > 0">
 
     <mat-expansion-panel *ngFor="let employee of employees">
@@ -5,9 +8,15 @@
         <mat-expansion-panel-header>
             {{employee.firstName}} {{employee.lastName}}
         </mat-expansion-panel-header>
-        {{ employee.empId }}
+        ID: {{ employee.empId }}
+        <mat-panel-description>
+            <p>Tasks: 'should be shown your tasks here'</p>
+            <p>{{employee.empId}}</p>
+            <p>{{employee.empId}}</p>
+        </mat-panel-description>
         <mat-action-row>
             <button mat-button color="primary">EDIT</button>
+            <button mat-button color="primary" (click)="retrieveTasks()">Retrieve Tasks</button>
             <button mat-button color="warn" (click)="onDelete(employee.empId)">DELETE</button>
         </mat-action-row>
     </mat-expansion-panel>

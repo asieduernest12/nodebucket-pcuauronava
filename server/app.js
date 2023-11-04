@@ -10,6 +10,7 @@ const express = require("express");
 const createServer = require("http-errors");
 const path = require("path");
 //
+const employeeRoute = require("./routes/employee");
 const bodyParser = require("body-parser");
 
 require("./connection");
@@ -17,11 +18,38 @@ const Employee = require("./models/employee");
 const Task = require("./models/task");
 // schema for the tasks collection
 
+const swaggerjsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("../swagger.json");
+// const { options } = require("./routes/employee-api");
+
 // Create the Express app
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.use("/api/employees", employeeRoute);
+// error handler for 404 errors
+app.use(function (req, res, next) {
+  next(createServer(404)); // forward to error handler
+});
+
+// error handler for all other errors
+app.use(function (err, req, res, next) {
+  res.status(err.status || 500); // set response status code
+
+  // send response to client in JSON format with a message and stack trace
+  res.json({
+    type: "error",
+    status: err.status,
+    message: err.message,
+    stack: req.app.get("env") === "development" ? err.stack : undefined,
+  });
+});
+
+// CORS configuration
 const cors = require("cors");
 app.use(cors());
 // CORS configuration
@@ -31,34 +59,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../dist/nodebucket")));
 app.use("/", express.static(path.join(__dirname, "../dist/nodebucket")));
-
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*"); // Allows any domain to access our resources
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  ); // Which kind of headers are allowed
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PATCH, DELETE, OPTIONS"
-  ); // Which kind of requests are allowed
-  next(); // Allows the request to continue to the next middleware in line
-});
-
-// Employee API routes
-
-//working on this part!!!
-// app.get("/api/employees/:empId/tasks", async (req, res) => {
-//   try {
-//     // const tasks = await Task.find({ employee:{ req.params.empId} });
-//     // find the task where the empId field on the employee document matches the empId parameter
-//     const tasks = await Task.find({ "employee.empId": req.params.empId });
-//     res.json(tasks);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).send(error);
-//   }
-// });
 
 app.get("/api/employees", async (req, res) => {
   Employee.find().then((documents) => {
@@ -144,9 +144,9 @@ app.delete("/api/tasks/:id", (req, res, next) => {
 });
 
 // error handler for 404 errors
-app.use(function (req, res, next) {
-  res(createServer(404)); // forward to error handler
-});
+// app.use(function (req, res, next) {
+//   next(createServer(404)); // forward to error handler
+// });
 
 // error handler for all other errors
 app.use(function (err, req, res, next) {

@@ -11,6 +11,7 @@ import { EmployeeModel } from './employee.model';
   providedIn: 'root',
 })
 export class EmployeeService {
+  // doneTasks: employee.doneTasks
   private employees: EmployeeModel[] = [];
   private employeesUpdated = new Subject<EmployeeModel[]>();
   //passing a payload of type EmployeeModel[]
@@ -77,5 +78,9 @@ export class EmployeeService {
         this.employees = updatedEmployees;
         this.employeesUpdated.next([...this.employees]);
       });
+  }
+  retrieveTasks() {
+    // doneTasks: employee.doneTasks
+    throw new Error('Method not implemented.');
   }
 }

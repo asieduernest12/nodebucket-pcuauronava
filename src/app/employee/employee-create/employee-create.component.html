@@ -1,4 +1,7 @@
 <mat-card>
+    <mat-card-title>
+        <h1> Create Employee</h1>
+    </mat-card-title>
     <form (submit)="onAddEmployee(employeeForm)" #employeeForm="ngForm">
         <mat-form-field>
             <input matInput type="text" name="empId" ngModel required minlength="4" placeholder="Employee ID"

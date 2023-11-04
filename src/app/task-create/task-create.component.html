@@ -1,4 +1,7 @@
 <mat-card>
+    <mat-card-title>
+        <h1> Create Task</h1>
+    </mat-card-title>
     <form (submit)="onAddTask(taskForm)" #taskForm="ngForm">
         <mat-form-field>
             <input matInput type="text" name="title" ngModel required minlength="3" placeholder="Task Title"

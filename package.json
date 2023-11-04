@@ -25,6 +25,7 @@
     "@angular/router": "^16.1.0",
     "ajv": "^8.12.0",
     "cors": "^2.8.5",
+    "env": "^0.0.2",
     "express": "^4.18.2",
     "http-errors": "^2.0.0",
     "mongodb": "^5.7.0",
@@ -32,6 +33,8 @@
     "ngx-cookie": "^6.0.1",
     "ngx-cookie-service": "^16.0.0",
     "rxjs": "~7.8.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
   },

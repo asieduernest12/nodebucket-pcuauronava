@@ -1,0 +1,30 @@
+<mat-sidenav-container>
+    <mat-sidenav mode="side" opened>
+        <button mat-button class="menu-button" routerLink="/">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
+            <span>Home</span>
+        </button>
+        <hr>
+        <button mat-button class="menu-button" routerLink="/about">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="note"></mat-icon>
+            <span>About</span>
+        </button>
+        <!-- <button mat-button class="menu-button" routerLink="/admin-manager">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="light"></mat-icon>
+            <span>Admin Manager</span>
+        </button> -->
+        <button mat-button class="menu-button" routerLink="/contact">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="phone"></mat-icon>
+            <span>Contact us</span>
+        </button>
+        <button mat-button class="menu-button" routerLink="/task-manager">
+            <mat-icon aria-hidden="false" aria-label="lock icon" fontIcon="lock"></mat-icon>
+            <span>Task Manager</span>
+        </button>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div class="content mat-elevation-z4">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>
