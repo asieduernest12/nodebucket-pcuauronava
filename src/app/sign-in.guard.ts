@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { COOKIE_KEYS } from './sign-in/sign-in.service';
 // import { Router } from '@angular/router';
 
 @Injectable({
@@ -20,13 +21,12 @@ export class SignInGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean> | boolean | UrlTree {
-    const isSigned = this.cookieService.check('session_user');
-  
+    const isSigned = this.cookieService.check(COOKIE_KEYS.EMP_ID);
 
-    if (isSigned===false){
-      this.router.navigate(['/session/sign-in']);
+    if (isSigned === false) {
+      this.router.navigate(['/sign-in']);
     }
 
-    return isSigned
+    return isSigned;
   }
 }

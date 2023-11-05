@@ -1,7 +1,7 @@
 /**
  * Title: security-routing.module.ts
  * Author: Professor Krasso
- * Date: 8/5/23
+ * Date: 11/04/23
  */
 
 // imports statements
@@ -13,12 +13,12 @@ const routes: Routes = [
   {
     path: '',
     component: SecurityComponent,
-    title: 'Nodebucket: Security'
-  }
+    title: 'Nodebucket: Security',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class SecurityRoutingModule { }
+export class SecurityRoutingModule {}

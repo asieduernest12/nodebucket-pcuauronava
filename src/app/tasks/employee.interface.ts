@@ -1,14 +1,14 @@
 /**
  * Title: employee.interface.ts
- * Author: Erin Brady
+ * Author: Patrick C
  * Date: 08/16/2023
  * Description: Employee schema
  */
 
-import { Item } from './item.interface';
+import { Task } from './item.interface';
 
 export interface Employee {
   empId: number;
-  todo: Item[];
-  done: Item[];
+  todo: Task[];
+  done: Task[];
 }

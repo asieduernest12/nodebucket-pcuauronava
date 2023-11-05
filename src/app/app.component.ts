@@ -1,7 +1,7 @@
 /**
  * Title: app.component.ts
  * Author: Professor Krasso
- * Date: 8/5/23
+ * Date: 11/04/23
  */
 
 // imports statements
@@ -11,9 +11,9 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   template: `
     <!-- This router-outlet displays the content of the BaseLayout or AuthLayout components -->
+    <app-nav></app-nav>
     <router-outlet></router-outlet>
   `,
-  styles: []
+  styles: [],
 })
-export class AppComponent {
-}
+export class AppComponent {}

@@ -1,8 +1,8 @@
 /**
  * Title: security.module.ts
  * Author: Professor Krasso
- * Date: 8/5/23
-*/
+ * Date: 11/04/23
+ */
 
 // imports statements
 import { NgModule } from '@angular/core';
@@ -12,12 +12,7 @@ import { SecurityRoutingModule } from './security-routing.module';
 import { SecurityComponent } from './security.component';
 
 @NgModule({
-  declarations: [
-    SecurityComponent
-  ],
-  imports: [
-    CommonModule,
-    SecurityRoutingModule
-  ]
+  declarations: [SecurityComponent],
+  imports: [CommonModule, SecurityRoutingModule],
 })
-export class SecurityModule { }
+export class SecurityModule {}

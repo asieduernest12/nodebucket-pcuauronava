@@ -1,0 +1,48 @@
+<div fxLayout="row">
+    <mat-card fxFlex="20">
+        <form [formGroup]="newTaskFG" (submit)="addTask($event)">
+
+            <h2 class="p-4">New Task</h2>
+            <mat-card-content>
+                <mat-form-field>
+                    <input matInput placeholder="Task..." name="todo" formControlName="title" />
+                </mat-form-field>
+                <br />
+                <button mat-raised-button color="primary" type="submit">Save</button>
+            </mat-card-content>
+        </form>
+    </mat-card>
+    <div fxLayout="row" fxFlex="80">
+        <mat-card class="todos" fxFlex="50" fxLayoutAlign="start center" fxLayout="column">
+            <mat-card-header>
+                <mat-card-title>Tasks</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item *ngFor="let task of todoTasks">
+                        <mat-checkbox (change)="updateTask(task,$event)"
+                            [checked]="task.done">{{task.title}}</mat-checkbox>
+                        <mat-icon (click)="taskService.deleteTask(task)">delete</mat-icon>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+
+
+
+        <mat-card class="todos" fxFlex="50" fxLayoutAlign="start center" fxLayout="column">
+            <mat-card-header>
+                <mat-card-title>Completed</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item *ngFor="let task of doneTasks">
+                        <mat-checkbox [checked]="task.done"
+                            (change)="updateTask(task,$event)">{{task.title}}</mat-checkbox>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+</div>

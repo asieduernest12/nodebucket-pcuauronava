@@ -1,7 +1,7 @@
 /**
  * Attribution
  * Title: mongo.js
- * Author: Erin Brady
+ * Author: Patrick C
  * Description: Connect to database
  */
 
