@@ -1,0 +1,35 @@
+mat-card {
+    margin: 20px;
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+    background: brown;
+  }
+
+  mat-card ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  mat-card-title {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
+  
+  mat-card-content {
+    font-size: 1.2em;
+  }
+  
+  mat-card-actions {
+    margin-top: 20px;
+  }
+  
+  mat-card-actions a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  
+  mat-card-actions a:hover {
+    text-decoration: underline;
+}

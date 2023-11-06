@@ -53,7 +53,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmployeeService } from './employee.service';
 import { SignInComponent } from './sign-in/sign-in.component';
-import { TaskService } from './task.service';
 //
 
 @NgModule({
@@ -99,7 +98,7 @@ import { TaskService } from './task.service';
     MatListModule,
     MatCheckboxModule
   ],
-  providers: [TaskService, EmployeeService],
+  providers: [ EmployeeService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
