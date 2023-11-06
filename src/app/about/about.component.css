@@ -1,0 +1,23 @@
+mat-card {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: brown;
+    font-family: 'Roboto', sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.5;
+    /* color: #7c2020; */
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+/* background {
+    background-image: url('../../assets/children-using-electronic-devices.jpg');
+    /* Image by <a href="https://www.freepik.com/free-photo/children-using-electronic-devices_3606842.htm#query=kids%20with%20computers&position=10&from_view=search&track=ais">Freepik</a>
+    background-size: cover; */
+    /** margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+} */
