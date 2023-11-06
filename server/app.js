@@ -10,25 +10,18 @@ const express = require("express");
 const createServer = require("http-errors");
 const path = require("path");
 
-require('./connection')
+require("./connection");
 
 const bodyParser = require("body-parser");
 
 
-
-const swaggerjsdoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("../swagger.json");
-// const { options } = require("./routes/employee-api");
 
 // Create the Express app
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
 const { employeeRoutes } = require("./routes/employee");
-
 
 // CORS configuration
 const cors = require("cors");
@@ -41,9 +34,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../dist/nodebucket")));
 app.use("/", express.static(path.join(__dirname, "../dist/nodebucket")));
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+require('../swaggerDefinition')(app);
 
-app.use('/api/employees', employeeRoutes)
+app.use("/api/employees", employeeRoutes);
 
 // error handler for 404 errors
 app.use(function (req, res, next) {
