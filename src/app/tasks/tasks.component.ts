@@ -33,6 +33,7 @@ export class TasksComponent implements OnInit {
   empId: number;
   todoTasks: Task[];
   doneTasks: Task[];
+  //retrieves the tasks from the employee
 
   newTaskFG: FormGroup = this.fb.group({
     title: [
@@ -44,13 +45,7 @@ export class TasksComponent implements OnInit {
       ]),
     ],
   });
-  //1
-  todoForm!: FormGroup;
-  tasks: ITask[] = [];
-  //Itask is an interface I created to stablish a model
-  //including task and done properties, simulating the actual functionality
-  done: ITask[] = [];
-  //1 this is from the todo example see video
+  
 
   constructor(
     private cookieService: CookieService,
@@ -87,7 +82,7 @@ export class TasksComponent implements OnInit {
     
     
   }
-  drop(event: CdkDragDrop<ITask[]>) {
+  drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,

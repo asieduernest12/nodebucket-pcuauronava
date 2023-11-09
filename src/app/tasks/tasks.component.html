@@ -7,7 +7,7 @@
             <h2 class="p-4">New Task</h2>
             <mat-card-content>
                 <mat-form-field>
-                    <input matInput placeholder="Task..." name="todo" formControlName="title" />
+                    <input id="newTask" matInput placeholder="Think of a task..." name="todo" formControlName="title" />
                 </mat-form-field>
                 <br />
                 <button mat-raised-button color="primary" type="submit">Save</button>
@@ -15,7 +15,7 @@
         </form>
     </mat-card>
     <div fxLayout="row" fxFlex="80">
-        <mat-card class="todos" fxFlex="50" fxLayoutAlign="start center" fxLayout="column">
+        <mat-card class="example-box" fxFlex="50" fxLayoutAlign="start center" fxLayout="column">
             <mat-card-header>
                 <mat-card-title>
                     <h1>
@@ -24,20 +24,22 @@
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <mat-list cdkDropList #listOne="cdkDropList" [cdkDropListConnectedTo]="[listTwo]">
-                    <mat-list-item *ngFor="let task of todoTasks">
+                <mat-list id="todoList" cdkDropList #todoList="cdkDropList" [cdkDropListConnectedTo]="[doneList]">
+                    <mat-list-item class="example-list" cdkDrag *ngFor="let task of todoTasks">
                         <mat-checkbox (change)="updateTask(task,$event)"
-                            [checked]="task.done">{{task.title}}</mat-checkbox>
-                        mat-icon
-                        <mat-icon (click)="taskService.deleteTask(task)">delete</mat-icon>
+                            [checked]="task.done"></mat-checkbox>
+                            {{task.title}}
+                        <!-- <mat-icon>edit</mat-icon>
+                        <mat-icon (click)="taskService.deleteTask(task)">delete</mat-icon> -->
                     </mat-list-item>
                 </mat-list>
+                <mat-hint>Drag and Drop in Done list</mat-hint>
             </mat-card-content>
         </mat-card>
 
 
 
-        <mat-card class="todos" fxFlex="50" fxLayoutAlign="start center" fxLayout="column">
+        <mat-card class="example-box" fxFlex="50" fxLayoutAlign="start center" fxLayout="column">
             <mat-card-header>
                 <mat-card-title>
                     <h1>
@@ -46,12 +48,14 @@
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <mat-list cdkDropList #listTwo="cdkDropList" [cdkDropListConnectedTo]="[listOne]">
-                    <mat-list-item *ngFor="let task of doneTasks">
+                <mat-list id="doneList" cdkDropList #doneList="cdkDropList" [cdkDropListConnectedTo]="[todoList]">
+                    <mat-list-item class="example-list" cdkDrag *ngFor="let task of doneTasks">
                         <mat-checkbox [checked]="task.done"
-                            (change)="updateTask(task,$event)">{{task.title}}</mat-checkbox>
+                            (change)="updateTask(task,$event)"></mat-checkbox>
+                            {{task.title}}
                     </mat-list-item>
                 </mat-list>
+                <mat-hint>Drag and Drop in Done list</mat-hint>
             </mat-card-content>
         </mat-card>
 
