@@ -1,3 +1,5 @@
+
+
 <div fxLayout="row">
     <mat-card fxFlex="20">
         <form [formGroup]="newTaskFG" (submit)="addTask($event)">
@@ -22,10 +24,11 @@
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <mat-list>
+                <mat-list cdkDropList #listOne="cdkDropList" [cdkDropListConnectedTo]="[listTwo]">
                     <mat-list-item *ngFor="let task of todoTasks">
                         <mat-checkbox (change)="updateTask(task,$event)"
                             [checked]="task.done">{{task.title}}</mat-checkbox>
+                        mat-icon
                         <mat-icon (click)="taskService.deleteTask(task)">delete</mat-icon>
                     </mat-list-item>
                 </mat-list>
@@ -43,7 +46,7 @@
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <mat-list>
+                <mat-list cdkDropList #listTwo="cdkDropList" [cdkDropListConnectedTo]="[listOne]">
                     <mat-list-item *ngFor="let task of doneTasks">
                         <mat-checkbox [checked]="task.done"
                             (change)="updateTask(task,$event)">{{task.title}}</mat-checkbox>

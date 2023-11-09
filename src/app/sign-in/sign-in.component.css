@@ -7,3 +7,6 @@ mat-card {
     line-height: 1.5;
     color: #ffffff;
 }
+.bg-black {
+    background-color: #000000;
+}

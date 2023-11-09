@@ -4,7 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { tap } from 'rxjs';
 
 export enum COOKIE_KEYS {
-  NAME = 'fullname',
+  NAME = 'firstName',
   EMP_ID = 'empId',
 }
 

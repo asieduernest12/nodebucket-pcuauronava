@@ -53,6 +53,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmployeeService } from './employee.service';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 //
 
 @NgModule({
@@ -96,7 +97,8 @@ import { SignInComponent } from './sign-in/sign-in.component';
     HttpClientModule,
     CookieModule,
     MatListModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    DragDropModule
   ],
   providers: [ EmployeeService],
   bootstrap: [AppComponent],

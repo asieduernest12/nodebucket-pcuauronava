@@ -1,26 +1,33 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.0.3",
   "info": {
-    "title": "Employee Task API",
-    "description": "API documentation for managing employee tasks.",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "title": "NodeBucket - OpenAPI Documentation",
+    "description": "This is a Task Management Server documented according to the OpenAPI Specification.\n\nSome useful links:\n- [NodeBucket repository](https://github.com/pcuauronava/nodebucket)"
   },
   "servers": [
     {
-      "url": "http://localhost:3000",
-      "description": "Local Server"
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Tasks",
+      "description": "All operations available regarding employees."
     }
   ],
   "paths": {
-    "/{empId}/tasks": {
+    "/employees/{empId}": {
       "get": {
-        "summary": "Get tasks for a specific employee.",
+        "tags": ["Tasks"],
+        "summary": "findEmployeeById",
+        "description": "Get an employee by their ID.",
         "parameters": [
           {
             "name": "empId",
             "in": "path",
-            "description": "Employee ID",
             "required": true,
+            "description": "A numerical value between 1007 - 1012",
             "schema": {
               "type": "number"
             }
@@ -28,160 +35,306 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved tasks for the employee.",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Task"
+                  "type": "object",
+                  "properties": {
+                    "empId": {
+                      "type": "number",
+                      "example": 1007
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "Johann"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Bach"
+                    }
                   }
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request. Invalid input or missing parameters."
+            "description": "Bad Request"
           },
           "404": {
-            "description": "No tasks found for the employee."
+            "description": "Not Found"
           },
           "500": {
-            "description": "Internal server error."
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/{empId}/tasks/{id}": {
-      "delete": {
-        "summary": "Delete a task by ID for a specific employee.",
+    "/employees/{empId}/tasks": {
+      "get": {
+        "tags": ["Tasks"],
+        "summary": "findAllTasks",
+        "description": "Get all tasks created for a designated employee.",
         "parameters": [
           {
             "name": "empId",
             "in": "path",
-            "description": "Employee ID",
             "required": true,
+            "description": "A numerical value between 1007 - 1012",
             "schema": {
               "type": "number"
-            }
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Task ID",
-            "required": true,
-            "schema": {
-              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully deleted the task."
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "empId": {
+                      "type": "number",
+                      "example": 1007
+                    },
+                    "todo": {
+                      "type": "array",
+                      "example": []
+                    },
+                    "done": {
+                      "type": "array",
+                      "example": []
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad request. Invalid input or missing parameters."
+            "description": "Bad Request"
           },
           "404": {
-            "description": "Task not found."
+            "description": "Not Found"
           },
           "500": {
-            "description": "Internal server error."
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Tasks"],
+        "summary": "createTask",
+        "description": "Create a new task for a designated employee.",
+        "parameters": [
+          {
+            "name": "empId",
+            "in": "path",
+            "required": true,
+            "description": "A numerical value between 1007 - 1012",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Information about the new task.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "task": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "required": true,
+                        "description": "A brief title describing the new task.",
+                        "example": "Test Task"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "64e93dfb9f0e3c3b7fa5bc0d"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
       "put": {
-        "summary": "Update a task by ID for a specific employee.",
+        "tags": ["Tasks"],
+        "summary": "updateTask",
+        "description": "Update the task list for a designated employee.",
         "parameters": [
           {
             "name": "empId",
             "in": "path",
-            "description": "Employee ID",
             "required": true,
+            "description": "A numerical value between 1007 - 1012",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Information about the task list.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "todo": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "required": true,
+                          "description": "The unique ID of the task.",
+                          "example": "64e6bb3d7ff5447cb9892ccc"
+                        },
+                        "text": {
+                          "type": "string",
+                          "required": true,
+                          "description": "A brief title describing the task.",
+                          "example": "To do Test Task"
+                        }
+                      }
+                    }
+                  },
+                  "done": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "required": true,
+                          "description": "The unique ID of the task.",
+                          "example": "64e6b2477ff5447cb9892cc9"
+                        },
+                        "text": {
+                          "type": "string",
+                          "required": true,
+                          "description": "A brief title describing the task.",
+                          "example": "Done Test Task"
+                        },
+                        "category": {
+                          "type": "object",
+                          "required": true,
+                          "description": "The designated category of the task.",
+                          "properties": {
+                            "categoryName": {
+                              "type": "string",
+                              "required": true,
+                              "description": "The name of the task's designated category.",
+                              "example": "projects"
+                            },
+                            "backgroundColor": {
+                              "type": "string",
+                              "required": true,
+                              "description": "The label color associated with the task's designated category.",
+                              "example": "FFFFFF"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success; No content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/employees/{empId}/tasks/{taskId}": {
+      "delete": {
+        "tags": ["Tasks"],
+        "summary": "deleteTasks",
+        "description": "Delete a task.",
+        "parameters": [
+          {
+            "name": "empId",
+            "in": "path",
+            "required": true,
+            "description": "A numerical value between 1007 - 1012",
             "schema": {
               "type": "number"
             }
           },
           {
-            "name": "id",
+            "name": "taskId",
             "in": "path",
-            "description": "Task ID",
             "required": true,
+            "description": "A unique ID for the designated task.",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "task",
-            "in": "body",
-            "description": "The updated task object.",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "description": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "content": {
-                  "type": "string"
-                },
-                "done": {
-                  "type": "boolean"
-                }
-              }
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successfully updated the task.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Task"
-                }
-              }
-            }
+          "204": {
+            "description": "Success; No content"
           },
           "400": {
-            "description": "Bad request. Invalid input or missing parameters."
+            "description": "Bad Request"
           },
           "404": {
-            "description": "Task not found."
+            "description": "Not Found"
           },
           "500": {
-            "description": "Internal server error."
+            "description": "Internal Server Error"
           }
         }
       }
     }
   },
-  "components": {
-    "schemas": {
-      "Task": {
-        "type": "object",
-        "properties": {
-          "description": {
-            "type": "string"
-          },
-          "empId": {
-            "type": "number"
-          },
-          "title": {
-            "type": "string"
-          },
-          "content": {
-            "type": "string"
-          },
-          "done": {
-            "type": "boolean",
-            "default": false
-          }
-        }
-      }
-    }
-  }
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"]
 }
