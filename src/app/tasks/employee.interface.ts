@@ -9,6 +9,6 @@ import { Task } from './item.interface';
 
 export interface Employee {
   empId: number;
-  todo: Task[];
-  done: Task[];
+  todoTasks: Task[];
+  doneTasks: Task[];
 }

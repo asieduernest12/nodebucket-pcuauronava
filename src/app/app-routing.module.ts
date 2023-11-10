@@ -40,6 +40,26 @@ const routes: Routes = [
       },
     ],
   },
+  // { path : '', component: BaseLayoutComponent,
+  // children: [
+  //   {
+  //     path: '', component: HomeComponent,
+  //   },
+  //   {
+  //     path: 'home', component: HomeComponent,
+  //   },
+  //   {
+  //     path: 'contact', component: ContactComponent,
+  //   },
+  //   {
+  //     path: 'about', component: AboutComponent,
+  //   },
+  //   {
+  //     path: 'not-found', component: NotFoundComponent
+  //   }
+  // ]
+
+  // },
 
   { path: 'not-found', component: NotFoundComponent },
   { path: 'sign-in', component: SignInComponent },

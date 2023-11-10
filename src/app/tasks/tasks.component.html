@@ -1,63 +1,64 @@
-
-
 <div fxLayout="row">
-    <mat-card fxFlex="20">
-        <form [formGroup]="newTaskFG" (submit)="addTask($event)">
+  <mat-card fxFlex="20">
+    <form [formGroup]="newTaskFG" (ngSubmit)="addTask()">
 
-            <h2 class="p-4">New Task</h2>
-            <mat-card-content>
-                <mat-form-field>
-                    <input id="newTask" matInput placeholder="Think of a task..." name="todo" formControlName="title" />
-                </mat-form-field>
-                <br />
-                <button mat-raised-button color="primary" type="submit">Save</button>
-            </mat-card-content>
-        </form>
-    </mat-card>
-    <div fxLayout="row" fxFlex="80">
-        <mat-card class="example-box" fxFlex="50" fxLayoutAlign="start center" fxLayout="column">
-            <mat-card-header>
-                <mat-card-title>
-                    <h1>
-                        Task List
-                    </h1>
-                </mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <mat-list id="todoList" cdkDropList #todoList="cdkDropList" [cdkDropListConnectedTo]="[doneList]">
-                    <mat-list-item class="example-list" cdkDrag *ngFor="let task of todoTasks">
-                        <mat-checkbox (change)="updateTask(task,$event)"
-                            [checked]="task.done"></mat-checkbox>
-                            {{task.title}}
-                        <!-- <mat-icon>edit</mat-icon>
+      <h2 class="p-4">New Task</h2>
+      <mat-card-content>
+        <mat-form-field>
+          <input id="newTask" matInput placeholder="Think of a task..." name="todo" formControlName="title" />
+        </mat-form-field>
+        <br />
+        <button mat-raised-button color="primary" type="submit">Save</button>
+      </mat-card-content>
+
+    </form>
+  </mat-card>
+  <div fxLayout="row" fxFlex="80">
+    <mat-card class="example-box" fxFlex="50" fxLayoutAlign="start center" fxLayout="column">
+      <mat-card-header>
+        <mat-card-title>
+          <h1>
+            Task List
+          </h1>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list id="todoList" cdkDropList #todoList="cdkDropList" [cdkDropListConnectedTo]="[doneList]"
+          [cdkDropListData]="todoTasks" (cdkDropListDropped)="drop($event)">
+          <mat-hint>Drag and Drop in Done list</mat-hint>
+          <mat-list-item class="example-list" cdkDrag *ngFor="let item of todoTasks" [attr.data-task]="item | json">
+            <!-- <mat-checkbox (change)="updateTask(task,$event)"
+                            [checked]="task.done"></mat-checkbox> -->
+            {{item.title}}
+            <!-- <mat-icon>edit</mat-icon>
                         <mat-icon (click)="taskService.deleteTask(task)">delete</mat-icon> -->
-                    </mat-list-item>
-                </mat-list>
-                <mat-hint>Drag and Drop in Done list</mat-hint>
-            </mat-card-content>
-        </mat-card>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
 
 
 
-        <mat-card class="example-box" fxFlex="50" fxLayoutAlign="start center" fxLayout="column">
-            <mat-card-header>
-                <mat-card-title>
-                    <h1>
-                        Completed
-                    </h1>
-                </mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <mat-list id="doneList" cdkDropList #doneList="cdkDropList" [cdkDropListConnectedTo]="[todoList]">
-                    <mat-list-item class="example-list" cdkDrag *ngFor="let task of doneTasks">
-                        <mat-checkbox [checked]="task.done"
-                            (change)="updateTask(task,$event)"></mat-checkbox>
-                            {{task.title}}
-                    </mat-list-item>
-                </mat-list>
-                <mat-hint>Drag and Drop in Done list</mat-hint>
-            </mat-card-content>
-        </mat-card>
+    <mat-card class="example-box" fxFlex="50" fxLayoutAlign="start center" fxLayout="column">
+      <mat-card-header>
+        <mat-card-title>
+          <h1>
+            Completed
+          </h1>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list id="doneList" cdkDropList #doneList="cdkDropList" [cdkDropListConnectedTo]="[todoList]"
+          (cdkDropListDropped)="drop($event)" [cdkDropListData]="doneTasks">
+          <mat-hint>Drag and Drop in Done list</mat-hint>
+          <mat-list-item class="example-list" cdkDrag *ngFor="let item of doneTasks" [attr.data-task]="item|json">
+            <!-- <mat-checkbox [checked]="task.done"
+                            (change)="updateTask(task,$event)"></mat-checkbox> -->
+            {{item.title}}
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
 
-    </div>
+  </div>
 </div>

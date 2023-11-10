@@ -5,12 +5,13 @@
   Description: Tasks Component Logic
 */
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { TaskService } from './task.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Employee } from './employee.interface';
 import { Task } from './item.interface';
+import { Item } from './item.interface';
 import { NgFor } from '@angular/common';
 import {
   CdkDragDrop,
@@ -21,18 +22,17 @@ import {
 } from '@angular/cdk/drag-drop';
 import { COOKIE_KEYS } from 'src/app/sign-in/sign-in.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { ITask } from './task';
 
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.css'],
 })
-export class TasksComponent implements OnInit {
+export class TasksComponent {
   employee: Employee;
   empId: number;
-  todoTasks: Task[];
-  doneTasks: Task[];
+  todoTasks: Item[];
+  doneTasks: Item[];
   //retrieves the tasks from the employee
 
   newTaskFG: FormGroup = this.fb.group({
@@ -45,50 +45,82 @@ export class TasksComponent implements OnInit {
       ]),
     ],
   });
-  
 
   constructor(
     private cookieService: CookieService,
-    public taskService: TaskService,
+    private taskService: TaskService,
     private fb: FormBuilder
   ) {
-    this.taskService.task$.subscribe((tasks) => {
-      this.todoTasks = tasks.filter((t) => t.done !== true);
-      this.doneTasks = tasks.filter((t) => t.done === true);
-    });
+    // this.taskService.task$.subscribe((tasks) => {
+    //   this.todoTasks = tasks.filter((t) => t.done !== true);
+    //   this.doneTasks = tasks.filter((t) => t.done === true);
+    // });
     //subscriber to filter done tasks from undone
     //this might be the answer of how to filter the tasks
 
-    this.taskService.getTasks();
+    this.employee = {} as Employee;
+    this.todoTasks = [];
+    this.doneTasks = [];
+
+    this.empId = parseInt(this.cookieService.get(COOKIE_KEYS.EMP_ID), 10);
+
+    this.taskService.getTasks(this.empId).subscribe({
+      next: (tasks: any) => {
+        this.employee = {} as Employee;
+        this.todoTasks = tasks.filter(({ done }) => !done);
+        this.doneTasks = tasks.filter(({ done }) => done);
+      },
+    });
     //this is to get all the tasks, referenced to taskService
   }
-  updateTask(task: Task, $event: MatCheckboxChange) {
-    const updatedTask = { ...task, done: $event.checked };
-    this.taskService.updateTask(updatedTask);
-    //this is to update the selected task
-  }
-  addTask($event: SubmitEvent) {
-    const newTask = {
-      empId: parseInt(this.cookieService.get(COOKIE_KEYS.EMP_ID)),
-      title: this.newTaskFG.value.title,
-    };
+  addTask() {
+    const title = this.newTaskFG.controls['title'].value;
+    let newTask = this.getTask(title);
+    this.taskService.addTask(this.empId, newTask).subscribe({
+      next: (task: any) => {
+        console.log('task added with id', task.id);
+        newTask._id = task.id;
 
-    this.taskService.addTask(newTask.empId, newTask);
-    this.newTaskFG.reset();
+        this.todoTasks.push(newTask);
+        this.newTaskFG.reset();
+        this.hideAlert();
+        // const newTask = {
+        //   empId: parseInt(this.cookieService.get(COOKIE_KEYS.EMP_ID)),
+        //   title: this.newTaskFG.value.title,
+        // };
+
+        // this.taskService.addTask(newTask.empId, newTask);
+      },
+    });
   }
-  ngOnInit(): void {
-    
-    
-    
-    
+  deleteTask(taskId: string) {
+    console.log('Task Item:', taskId);
+    if (!confirm('Are you sure you want to delete this task?')) {
+      return;
+    }
+    this.taskService.deleteTask(this.empId, taskId).subscribe({
+      next: (res: any) => {
+        console.log('task deleted whit id:', taskId);
+        if (!this.todoTasks) this.todoTasks = [];
+        if (!this.doneTasks) this.doneTasks = [];
+        this.hideAlert();
+      },
+      error: (err) => {
+        console.log('err', err);
+        this.hideAlert();
+      },
+    });
   }
-  drop(event: CdkDragDrop<string[]>) {
+
+  drop(event: CdkDragDrop<any[], any[], Item>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
         event.previousIndex,
         event.currentIndex
       );
+      console.log('Moved item in array', event.container.data);
+      this.updateTaskList(this.empId, this.todoTasks, this.doneTasks);
     } else {
       transferArrayItem(
         event.previousContainer.data,
@@ -96,7 +128,40 @@ export class TasksComponent implements OnInit {
         event.previousIndex,
         event.currentIndex
       );
+      console.log('Moved item in array', event.container.data);
+      const task = JSON.parse(
+        event.item.element.nativeElement.dataset['task']
+      ) as any as Task;
+      this.taskService.updateTask(this.empId, { ...task, done: !task.done });
     }
+  }
+
+  updateTaskList(empId: number, todoTasks: Item[], doneTasks: Item[]) {
+    // this.taskService.updateTask(empId, todoTasks, doneTasks).subscribe({
+    //   next: (res: any) => {
+    //     console.log('Task updated successfully');
+    //   },
+    //   error: (err) => {
+    //     console.log('err', err);
+    //     this.hideAlert();
+    //   },
+    // });
+  }
+  hideAlert() {
+    setTimeout(() => {
+      3000;
+    });
+  }
+
+  // updateTask(task: Task, $event: MatCheckboxChange) {
+  //   const updatedTask = { ...task, done: $event.checked };
+  //   this.taskService.updateTask(updatedTask);
+  //this is to update the selected task
+  // }
+
+  getTask(text: string) {
+    let task: Item = {} as Item;
+    return task;
   }
 
   // drag and drop functionality
