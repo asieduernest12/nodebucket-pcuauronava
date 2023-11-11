@@ -1,3 +1,4 @@
+import { MatDialog } from '@angular/material/dialog';
 /**
   Title: tasks.component.ts
   Author: Patrick C
@@ -5,10 +6,10 @@
   Description: Tasks Component Logic
 */
 
-import { Component } from '@angular/core';
+import { Component, TemplateRef, EventEmitter } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { TaskService } from './task.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Employee } from './employee.interface';
 import { Task } from './item.interface';
 import { Item } from './item.interface';
@@ -31,8 +32,10 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 export class TasksComponent {
   employee: Employee;
   empId: number;
-  todoTasks: Item[];
-  doneTasks: Item[];
+  todoTasks: Task[];
+  doneTasks: Task[];
+  taskToEdit: null | Task;
+  openTaskEditDialog: boolean = false;
   //retrieves the tasks from the employee
 
   newTaskFG: FormGroup = this.fb.group({
@@ -46,10 +49,30 @@ export class TasksComponent {
     ],
   });
 
+  editTaskFG = this.fb.group({
+    title: [
+      '',
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50),
+      ]),
+    ],
+    _id: [
+      '',
+      Validators.compose([
+        Validators.required,
+        Validators.min(1007),
+        Validators.max(1012),
+      ]),
+    ],
+  });
+
   constructor(
     private cookieService: CookieService,
     private taskService: TaskService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dialog: MatDialog
   ) {
     // this.taskService.task$.subscribe((tasks) => {
     //   this.todoTasks = tasks.filter((t) => t.done !== true);
@@ -64,14 +87,18 @@ export class TasksComponent {
 
     this.empId = parseInt(this.cookieService.get(COOKIE_KEYS.EMP_ID), 10);
 
-    this.taskService.getTasks(this.empId).subscribe({
+    this.loadTasks();
+    //this is to get all the tasks, referenced to taskService
+  }
+
+  loadTasks() {
+    return this.taskService.getTasks(this.empId).subscribe({
       next: (tasks: any) => {
         this.employee = {} as Employee;
         this.todoTasks = tasks.filter(({ done }) => !done);
         this.doneTasks = tasks.filter(({ done }) => done);
       },
     });
-    //this is to get all the tasks, referenced to taskService
   }
   addTask() {
     const title = this.newTaskFG.controls['title'].value;
@@ -79,17 +106,9 @@ export class TasksComponent {
     this.taskService.addTask(this.empId, newTask).subscribe({
       next: (task: any) => {
         console.log('task added with id', task.id);
-        newTask._id = task.id;
-
-        this.todoTasks.push(newTask);
         this.newTaskFG.reset();
+        this.loadTasks();
         this.hideAlert();
-        // const newTask = {
-        //   empId: parseInt(this.cookieService.get(COOKIE_KEYS.EMP_ID)),
-        //   title: this.newTaskFG.value.title,
-        // };
-
-        // this.taskService.addTask(newTask.empId, newTask);
       },
     });
   }
@@ -101,8 +120,9 @@ export class TasksComponent {
     this.taskService.deleteTask(this.empId, taskId).subscribe({
       next: (res: any) => {
         console.log('task deleted whit id:', taskId);
-        if (!this.todoTasks) this.todoTasks = [];
-        if (!this.doneTasks) this.doneTasks = [];
+
+        this.todoTasks = this.todoTasks.filter((task) => task._id !== taskId);
+        this.doneTasks = this.doneTasks.filter((task) => task._id !== taskId);
         this.hideAlert();
       },
       error: (err) => {
@@ -128,11 +148,13 @@ export class TasksComponent {
         event.previousIndex,
         event.currentIndex
       );
-      console.log('Moved item in array', event.container.data);
+      console.log('Transferred item in array', event.container.data);
       const task = JSON.parse(
         event.item.element.nativeElement.dataset['task']
       ) as any as Task;
-      this.taskService.updateTask(this.empId, { ...task, done: !task.done });
+      this.taskService
+        .updateTask(this.empId, { ...task, done: !task.done })
+        .subscribe(() => this.loadTasks());
     }
   }
 
@@ -148,9 +170,7 @@ export class TasksComponent {
     // });
   }
   hideAlert() {
-    setTimeout(() => {
-      3000;
-    });
+    setTimeout(() => {}, 3000);
   }
 
   // updateTask(task: Task, $event: MatCheckboxChange) {
@@ -159,9 +179,34 @@ export class TasksComponent {
   //this is to update the selected task
   // }
 
-  getTask(text: string) {
-    let task: Item = {} as Item;
+  getTask(title: string, empId = this.empId) {
+    let task = { title, _id: undefined, empId } as Task;
     return task;
+  }
+
+  openDialogWithTemplateRef(templateRef: TemplateRef<any>, task: Task) {
+    this.editTaskFG.setValue({ title: task.title, _id: task._id });
+
+    this.dialog.open(templateRef);
+  }
+
+  editTask(form: FormGroup) {
+    const updatedTask: Task = form.value;
+    const originalTask = [...this.doneTasks, ...this.todoTasks].find(
+      (_task) => _task._id === updatedTask._id
+    );
+
+    //join the title with the other task values
+    const taskData = { ...originalTask, ...updatedTask };
+
+    this.taskService.updateTask(this.empId, taskData).subscribe({
+      complete: () => {
+        originalTask.title = updatedTask.title;
+        this.dialog.closeAll();
+        form.reset();
+        this.loadTasks();
+      },
+    });
   }
 
   // drag and drop functionality

@@ -54,6 +54,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmployeeService } from './employee.service';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { DialogComponent } from './dialog/dialog.component';
 //
 
 @NgModule({
@@ -77,6 +78,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     SignInComponent,
   ],
   imports: [
+    DialogComponent,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -98,9 +100,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     CookieModule,
     MatListModule,
     MatCheckboxModule,
-    DragDropModule
+    DragDropModule,
   ],
-  providers: [ EmployeeService],
+  providers: [EmployeeService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

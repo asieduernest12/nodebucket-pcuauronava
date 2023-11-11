@@ -28,7 +28,7 @@ export class TaskService {
     return this.http.get('api/employees/' + empId + '/tasks');
   }
 
-  addTask(empId: number, task: Item) {
+  addTask(empId: number, task: Task) {
     return this.http.post('api/employees/' + empId + '/tasks', { task });
     // .subscribe(() => this.getTasks());
   }
@@ -38,7 +38,7 @@ export class TaskService {
       .put('/api/employees/' + empId + '/tasks/' + task._id, {
         task,
       })
-      .subscribe();
+      
   }
 
   deleteTask(empId: number, taskId: string) {

@@ -12,9 +12,8 @@ export interface Item {
 
 export interface Task {
   _id?: string;
-  text?: string;
   content?: string;
   done?: boolean;
-  empId: number;
+  empId: number | undefined;
   title: string;
 }
