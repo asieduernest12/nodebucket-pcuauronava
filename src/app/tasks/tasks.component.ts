@@ -6,7 +6,12 @@ import { MatDialog } from '@angular/material/dialog';
   Description: Tasks Component Logic
 */
 
-import { Component, TemplateRef, EventEmitter } from '@angular/core';
+import {
+  Component,
+  TemplateRef,
+  EventEmitter,
+  ElementRef,
+} from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { TaskService } from './task.service';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -36,6 +41,9 @@ export class TasksComponent {
   doneTasks: Task[];
   taskToEdit: null | Task;
   openTaskEditDialog: boolean = false;
+  alertMessage: string = null;
+  selectedTask: Task = null!;
+  alertTitle: string = '';
   //retrieves the tasks from the employee
 
   newTaskFG: FormGroup = this.fb.group({
@@ -72,7 +80,7 @@ export class TasksComponent {
     private cookieService: CookieService,
     private taskService: TaskService,
     private fb: FormBuilder,
-    private dialog: MatDialog
+    public dialog: MatDialog
   ) {
     // this.taskService.task$.subscribe((tasks) => {
     //   this.todoTasks = tasks.filter((t) => t.done !== true);
@@ -112,11 +120,23 @@ export class TasksComponent {
       },
     });
   }
+
+  showDeleteDialog(
+    task: Task,
+    alertTemplate: TemplateRef<any>
+  ) {
+    this.selectedTask = task;
+    this.alertTitle= 'Delete Task confirmation'
+    this.alertMessage = task.title;
+    this.dialog.open(alertTemplate);
+  }
+
   deleteTask(taskId: string) {
     console.log('Task Item:', taskId);
-    if (!confirm('Are you sure you want to delete this task?')) {
-      return;
-    }
+    // if (!confirm('Are you sure you want to delete this task?')) {
+    //   return;
+    // }
+
     this.taskService.deleteTask(this.empId, taskId).subscribe({
       next: (res: any) => {
         console.log('task deleted whit id:', taskId);

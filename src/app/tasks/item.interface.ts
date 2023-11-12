@@ -1,8 +1,9 @@
 /**
  * Title: item.interface.ts
- * Author: Patrick C
- * Date: 08/16/2023
- * Description: Task Item schema
+ * Author: Patrick Cuauro
+ * Modified by: 
+ * Date: 11/11/2023
+ * Description: 
  */
 
 export interface Item {

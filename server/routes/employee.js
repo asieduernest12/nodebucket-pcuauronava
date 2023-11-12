@@ -1,3 +1,10 @@
+/**
+ * Title: employee.js
+ * Author: Patrick Cuauro
+ * Modified by: 
+ * Date: 11/11/2023
+ * Description: Routes for the APIs
+ */
 const { Employee } = require("../models/employee");
 const { Task } = require("../models/task");
 
@@ -78,6 +85,7 @@ app.post("/:empId/tasks", async (req, res, next) => {
   const { task } = req.body;
   const newTask = await Task.create({ ...task, empId: req.params.empId });
   res.json(newTask);
+  console.log("task posted");
 });
 
 /**

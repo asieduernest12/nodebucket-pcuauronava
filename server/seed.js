@@ -1,6 +1,13 @@
-const mongoose = require('./connection')
-const {Employee} = require("./models/employee");
-const {Task} = require("./models/task");
+/**
+ * Title: seed.js
+ * Author: Ernest
+ * Modified by: Patrick Cuauro
+ * Date: 11/11/2023
+ * Description: Script to fill the database with sequential documents
+ */
+const mongoose = require("./connection");
+const { Employee } = require("./models/employee");
+const { Task } = require("./models/task");
 
 require("./connection");
 // Seed 7 employees
@@ -16,7 +23,6 @@ async function seedDatabase() {
       firstName: `First Name ${i + 1}`,
     });
 
-
     for (let j = 1; j <= 5; j++) {
       const task = await Task.create({
         // employee: employee._id,
@@ -24,12 +30,9 @@ async function seedDatabase() {
         title: `Task ${j} for ${employee.empId}`,
         content: `Task ${j} for Employee ${i}`,
       });
-
-    
     }
   }
 
   mongoose.connection.close();
 }
-
 seedDatabase();

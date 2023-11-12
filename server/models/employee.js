@@ -1,3 +1,11 @@
+/**
+ * Title: employee.js
+ * Author: Patrick Cuauro
+ * Modified by: 
+ * Date: 11/11/2023
+ * Description: Mongoose (MongoDB third party) schemas
+ */
+
 const mongoose = require("mongoose");
 
 const employeeSchema = mongoose.Schema(

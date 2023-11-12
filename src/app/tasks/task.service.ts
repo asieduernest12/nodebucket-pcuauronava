@@ -1,8 +1,9 @@
 /**
- Title: task.service.ts
- Author: Patrick C
- Date: 08/23/2023
- Description: Task Component Services
+ * Title: task.service.ts
+ * Author: Patrick Cuauro
+ * Modified by: 
+ * Date: 11/11/2023
+ * Description: Services for manipulating the tasks
  */
 
 import { Subject } from 'rxjs';

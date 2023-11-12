@@ -1,3 +1,10 @@
+/**
+ * Title: app.js
+ * Author: Patrick Cuauro
+ * Modified by: 
+ * Date: 11/11/2023
+ * Description: interface for the backend server
+ */
 const mongoose = require("mongoose");
 // MongoDB connection string
 const connString =

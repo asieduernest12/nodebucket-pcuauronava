@@ -1,8 +1,9 @@
 /**
  * Title: employee.interface.ts
- * Author: Patrick C
- * Date: 08/16/2023
- * Description: Employee schema
+ * Author: Patrick Cuauro
+ * Modified by: 
+ * Date: 11/11/2023
+ * Description: Model for employee
  */
 
 import { Task } from './item.interface';

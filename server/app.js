@@ -1,7 +1,9 @@
 /**
  * Title: app.js
  * Author: Professor Krasso
- * Date: 8/5/2023
+ * Modified by: Patrick Cuauro
+ * Date: 11/11/2023
+ * Description: interface for the backend server
  */
 "use strict";
 
@@ -38,6 +40,7 @@ require('../swaggerDefinition')(app);
 // The line of code require('../swaggerDefinition')(app); is used to load the Swagger definition into the Express application. The require() function is used to import the Swagger definition module from the ../swaggerDefinition file. The (app) part of the code is used to pass the Express application instance to the Swagger definition module. This allows the Swagger definition to be used to generate API documentation and to interact with the API.
 
 app.use("/api/employees", employeeRoutes);
+// app.use("/api/tasks", taskRoutes)
 
 // error handler for 404 errors
 app.use(function (req, res, next) {
