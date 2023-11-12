@@ -131,6 +131,10 @@ export class TasksComponent {
     this.dialog.open(alertTemplate);
   }
 
+  onClose(){
+    this.openTaskEditDialog = false
+  }
+  
   deleteTask(taskId: string) {
     console.log('Task Item:', taskId);
     // if (!confirm('Are you sure you want to delete this task?')) {
@@ -204,10 +208,11 @@ export class TasksComponent {
     return task;
   }
 
-  openDialogWithTemplateRef(templateRef: TemplateRef<any>, task: Task) {
+  openDialogWithTemplateRef(task: Task) {
     this.editTaskFG.setValue({ title: task.title, _id: task._id });
 
-    this.dialog.open(templateRef);
+    // this.dialog.open(templateRef);
+    this.openTaskEditDialog = true
   }
 
   editTask(form: FormGroup) {
