@@ -36,11 +36,7 @@
 
           <mat-list-item class="example-list" cdkDrag *ngFor="let task of todoTasks" [attr.data-task]="task | json"
             fxLayout="row">
-            <!-- <mat-checkbox (change)="updateTask(task,$event)"
-                            [checked]="task.done"></mat-checkbox> -->
             <span fxFlex="100 1"> {{task.title}}</span>
-
-
             <button mat-icon-button
               (click)="openTaskEditDialog=true;taskToEdit=task;openDialogWithTemplateRef(dialogChild,task)">
               <mat-icon style="flex-grow: 0;">edit</mat-icon>
@@ -53,20 +49,16 @@
       </mat-card-content>
     </mat-card>
 
-
-
     <mat-card class="example-box" fxFlex="50" fxLayoutAlign="start center" fxLayout="column">
       <mat-card-header>
         <mat-card-title>
-          <h1>
-            Completed
-          </h1>
+          <h1>Completed</h1>
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <mat-list id="doneList" cdkDropList #doneList="cdkDropList" [cdkDropListConnectedTo]="[todoList]"
           (cdkDropListDropped)="drop($event)" [cdkDropListData]="doneTasks">
-          <mat-hint>Drag and Drop in Done list</mat-hint>
+          <mat-hint>Drag and Drop in To Do list</mat-hint>
           <mat-list-item class="example-list" cdkDrag *ngFor="let task of doneTasks" [attr.data-task]="task|json"
             fxLayout="row">
             <span fxFlex> {{task.title}}</span>
@@ -112,12 +104,8 @@
   <div fxLayout="column">
 
     <mat-dialog-content>
-      <h4>
-        {{alertTitle}}
-      </h4>
-      <span>
-        Task title: {{alertMessage}}
-      </span>
+      <h4> {{alertTitle}} </h4>
+      <span> Task title: {{alertMessage}} </span>
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button (click)="deleteTask(selectedTask._id);dialog.closeAll()">ok(delete)</button>
