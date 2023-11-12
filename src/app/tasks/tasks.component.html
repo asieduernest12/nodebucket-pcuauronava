@@ -1,102 +1,147 @@
 <div fxLayout="row">
   <mat-card fxFlex="20">
     <form [formGroup]="newTaskFG" (ngSubmit)="addTask()">
-
       <h2 class="p-4">New Task</h2>
       <mat-card-content>
         <mat-form-field>
-          <input id="newTask" matInput placeholder="Think of a task..." name="todo" formControlName="title" />
+          <input
+            id="newTask"
+            matInput
+            placeholder="Think of a task..."
+            name="todo"
+            formControlName="title"
+          />
         </mat-form-field>
         <br />
         <button mat-raised-button color="primary" type="submit">Save</button>
       </mat-card-content>
-
     </form>
   </mat-card>
   <div fxLayout="row" fxFlex="80">
-    <mat-card class="example-box" fxFlex="50" fxLayoutAlign="start center" fxLayout="column">
+    <mat-card
+      class="example-box"
+      fxFlex="50"
+      fxLayoutAlign="start center"
+      fxLayout="column"
+    >
       <mat-card-header>
         <mat-card-title>
-          <h1>
-            Task List
-          </h1>
+          <h1>Task List</h1>
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <mat-list id="todoList" cdkDropList #todoList="cdkDropList" [cdkDropListConnectedTo]="[doneList]"
-          [cdkDropListData]="todoTasks" (cdkDropListDropped)="drop($event)">
+        <mat-list
+          id="todoList"
+          cdkDropList
+          #todoList="cdkDropList"
+          [cdkDropListConnectedTo]="[doneList]"
+          [cdkDropListData]="todoTasks"
+          (cdkDropListDropped)="drop($event)"
+        >
           <mat-hint>Drag and Drop in Done list</mat-hint>
 
-          <mat-list-item class="example-list" cdkDrag *ngFor="let task of todoTasks" [attr.data-task]="task | json"
-            fxLayout="row">
+          <mat-list-item
+            class="example-list"
+            cdkDrag
+            *ngFor="let task of todoTasks"
+            [attr.data-task]="task | json"
+            fxLayout="row"
+          >
             <!-- <mat-checkbox (change)="updateTask(task,$event)"
                             [checked]="task.done"></mat-checkbox> -->
-            <span fxFlex="100 1"> {{task.title}}</span>
+            <span fxFlex="100 1"> {{ task.title }}</span>
 
-
-            <button mat-icon-button
-              (click)="openTaskEditDialog=true;taskToEdit=task;openDialogWithTemplateRef(dialogChild,task)">
-              <mat-icon style="flex-grow: 0;">edit</mat-icon>
+            <button
+              mat-icon-button
+              (click)="openTaskEditDialog = true; taskToEdit = task"
+            >
+              <mat-icon style="flex-grow: 0">edit</mat-icon>
             </button>
             <button mat-icon-button (click)="deleteTask(task._id)">
-              <mat-icon style="flex-grow: 0;">delete</mat-icon>
+              <mat-icon style="flex-grow: 0">delete</mat-icon>
             </button>
           </mat-list-item>
         </mat-list>
       </mat-card-content>
     </mat-card>
 
-
-
-    <mat-card class="example-box" fxFlex="50" fxLayoutAlign="start center" fxLayout="column">
+    <mat-card
+      class="example-box"
+      fxFlex="50"
+      fxLayoutAlign="start center"
+      fxLayout="column"
+    >
       <mat-card-header>
         <mat-card-title>
-          <h1>
-            Completed
-          </h1>
+          <h1>Completed</h1>
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <mat-list id="doneList" cdkDropList #doneList="cdkDropList" [cdkDropListConnectedTo]="[todoList]"
-          (cdkDropListDropped)="drop($event)" [cdkDropListData]="doneTasks">
-          <mat-hint>Drag and Drop in Done list</mat-hint>
-          <mat-list-item class="example-list" cdkDrag *ngFor="let task of doneTasks" [attr.data-task]="task|json"
-            fxLayout="row">
-            <span fxFlex> {{task.title}}</span>
-            <button mat-icon-button
-              (click)="openTaskEditDialog=true;taskToEdit=task;openDialogWithTemplateRef(dialogChild,task)">
-              <mat-icon style="flex-grow: 0;">edit</mat-icon>
+        <mat-list
+          id="doneList"
+          cdkDropList
+          #doneList="cdkDropList"
+          [cdkDropListConnectedTo]="[todoList]"
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListData]="doneTasks"
+        >
+          <mat-hint>Drag and Drop in Done list {{openTaskEditDialog}}</mat-hint>
+          <mat-list-item
+            class="example-list"
+            cdkDrag
+            *ngFor="let task of doneTasks"
+            [attr.data-task]="task | json"
+            fxLayout="row"
+          >
+            <span fxFlex> {{ task.title }}</span>
+            <button
+              mat-icon-button
+              (click)="openTaskEditDialog = true; taskToEdit = task"
+            >
+              <mat-icon style="flex-grow: 0">edit</mat-icon>
             </button>
             <button mat-icon-button (click)="deleteTask(task._id)">
-              <mat-icon style="flex-grow: 0;">delete</mat-icon>
+              <mat-icon style="flex-grow: 0">delete</mat-icon>
             </button>
           </mat-list-item>
         </mat-list>
       </mat-card-content>
     </mat-card>
-
   </div>
 </div>
 
-<ng-template #dialogChild>
-  <form [formGroup]="editTaskFG" (ngSubmit)="editTask(editTaskFG)">
-
+<dialog-cmp (onClose)="onClose()" [open]="openTaskEditDialog">
+  <form
+    [formGroup]="editTaskFG"
+    (ngSubmit)="editTask(editTaskFG); openTaskEditDialog = false"
+  >
     <h2 mat-dialog-title class="p-4">Edit Task</h2>
 
     <div mat-dialog-content fxLayout="column">
-
       <mat-form-field>
-        <input id="_id" matInput placeholder="Think of a task..." name="_id" formControlName="_id" readonly />
+        <input
+          id="_id"
+          matInput
+          placeholder="Think of a task..."
+          name="_id"
+          formControlName="_id"
+          readonly
+        />
       </mat-form-field>
       <mat-form-field>
-        <input id="newTask" matInput placeholder="Think of a task..." name="todo" formControlName="title" />
+        <input
+          id="newTask"
+          matInput
+          placeholder="Think of a task..."
+          name="todo"
+          formControlName="title"
+        />
       </mat-form-field>
-
     </div>
 
     <div mat-dialog-actions>
-      <button mat-button mat-dialog-close>No</button>
-      <button mat-button mat-dialog-close cdkFocusInitial type="submit">Edit</button>
+      <button mat-button (click)="openTaskEditDialog = false">No</button>
+      <button mat-button cdkFocusInitial type="submit">Edit</button>
     </div>
   </form>
-</ng-template>
+</dialog-cmp>

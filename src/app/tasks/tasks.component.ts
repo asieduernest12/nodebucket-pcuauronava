@@ -112,6 +112,11 @@ export class TasksComponent {
       },
     });
   }
+
+  onClose(){
+    this.openTaskEditDialog = false
+  }
+  
   deleteTask(taskId: string) {
     console.log('Task Item:', taskId);
     if (!confirm('Are you sure you want to delete this task?')) {
