@@ -33,14 +33,18 @@ app.use(cors());
 // Configure the app
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "../dist/nodebucket")));
-app.use("/", express.static(path.join(__dirname, "../dist/nodebucket")));
+// app.use(express.static(path.join(__dirname, "../dist/nodebucket")));
+
+app.use("/", express.static(path.join(__dirname, "nodebucket")));
 
 require('../swaggerDefinition')(app);
 // The line of code require('../swaggerDefinition')(app); is used to load the Swagger definition into the Express application. The require() function is used to import the Swagger definition module from the ../swaggerDefinition file. The (app) part of the code is used to pass the Express application instance to the Swagger definition module. This allows the Swagger definition to be used to generate API documentation and to interact with the API.
 
 app.use("/api/employees", employeeRoutes);
 // app.use("/api/tasks", taskRoutes)
+app.use((req, res, next)=>{
+  res.sendFile(path.join(__dirname,"nodebucket", "index.html"));
+})
 
 // error handler for 404 errors
 app.use(function (req, res, next) {
