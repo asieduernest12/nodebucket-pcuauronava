@@ -8,7 +8,8 @@
     "server": "nodemon ./bin/www",
     "client": "ng serve",
     "dev": "concurrently --kill-others \"npm run server\" \"npm run client\"",
-    "seed": "node ./server/seed.js"
+    "seed": "node ./server/seed.js",
+    "render-deploy": "ng build --prod --output-path docs --base-href /nodebucket/"
   },
   "private": true,
   "dependencies": {
