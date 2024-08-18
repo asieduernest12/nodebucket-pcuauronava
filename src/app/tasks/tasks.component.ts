@@ -1,10 +1,10 @@
-import { MatDialog } from '@angular/material/dialog';
 /**
-  Title: tasks.component.ts
-  Author: Patrick C
-  Date: 08/16/2023
-  Description: Tasks Component Logic
-*/
+ * Title: tasks.component.ts
+ * Author: Patrick Cuauro
+ * Modified by: 
+ * Date: 11/11/2023
+ * Description: This is the component for the tasks page
+ */
 
 import {
   Component,
@@ -27,7 +27,8 @@ import {
   CdkDropList,
 } from '@angular/cdk/drag-drop';
 import { COOKIE_KEYS } from 'src/app/sign-in/sign-in.service';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
+// import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-tasks',
@@ -56,6 +57,7 @@ export class TasksComponent {
       ]),
     ],
   });
+  // this validates the input in the new task form
 
   editTaskFG = this.fb.group({
     title: [
@@ -75,6 +77,8 @@ export class TasksComponent {
       ]),
     ],
   });
+  // this validates the input in the edit task form
+  // the min and max values are the rank of the accepted task ids
 
   constructor(
     private cookieService: CookieService,
@@ -82,12 +86,6 @@ export class TasksComponent {
     private fb: FormBuilder,
     public dialog: MatDialog
   ) {
-    // this.taskService.task$.subscribe((tasks) => {
-    //   this.todoTasks = tasks.filter((t) => t.done !== true);
-    //   this.doneTasks = tasks.filter((t) => t.done === true);
-    // });
-    //subscriber to filter done tasks from undone
-    //this might be the answer of how to filter the tasks
 
     this.employee = {} as Employee;
     this.todoTasks = [];
@@ -137,9 +135,6 @@ export class TasksComponent {
   
   deleteTask(taskId: string) {
     console.log('Task Item:', taskId);
-    // if (!confirm('Are you sure you want to delete this task?')) {
-    //   return;
-    // }
 
     this.taskService.deleteTask(this.empId, taskId).subscribe({
       next: (res: any) => {
@@ -148,13 +143,19 @@ export class TasksComponent {
         this.todoTasks = this.todoTasks.filter((task) => task._id !== taskId);
         this.doneTasks = this.doneTasks.filter((task) => task._id !== taskId);
         this.hideAlert();
+
+        // this is to filter the tasks in the two categories
       },
       error: (err) => {
         console.log('err', err);
         this.hideAlert();
+
+        // this will show the error message in the console
       },
     });
   }
+
+  // Drag and drop functionality
 
   drop(event: CdkDragDrop<any[], any[], Item>) {
     if (event.previousContainer === event.container) {
@@ -163,6 +164,7 @@ export class TasksComponent {
         event.previousIndex,
         event.currentIndex
       );
+      //condition the items moved, if they stay in the same container
       console.log('Moved item in array', event.container.data);
       this.updateTaskList(this.empId, this.todoTasks, this.doneTasks);
     } else {
@@ -172,6 +174,7 @@ export class TasksComponent {
         event.previousIndex,
         event.currentIndex
       );
+      //condition the items moved, if they are moved the linked container
       console.log('Transferred item in array', event.container.data);
       const task = JSON.parse(
         event.item.element.nativeElement.dataset['task']

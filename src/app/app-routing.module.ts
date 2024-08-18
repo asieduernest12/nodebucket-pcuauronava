@@ -69,7 +69,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./security/security.module').then((m) => m.SecurityModule),
   },
-  { path: '*', redirectTo: '/not-found' },
+  { path: '**', redirectTo: '/not-found' },
 ];
 
 @NgModule({

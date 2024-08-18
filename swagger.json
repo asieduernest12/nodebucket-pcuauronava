@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "1.0.0",
+    "version": "1.3.0",
     "title": "NodeBucket - OpenAPI Documentation",
     "description": "This is a Task Management Server documented according to the OpenAPI Specification.\n\nSome useful links:\n- [NodeBucket repository](https://github.com/pcuauronava/nodebucket)"
   },
@@ -47,11 +47,11 @@
                     },
                     "firstName": {
                       "type": "string",
-                      "example": "Johann"
+                      "example": "Patrick"
                     },
                     "lastName": {
                       "type": "string",
-                      "example": "Bach"
+                      "example": "Cuauro"
                     }
                   }
                 }
